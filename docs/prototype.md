@@ -1,13 +1,26 @@
-# Prototype measurements and assembly
+# Prototype checklist
 
-Record tube diameter (model estimate 16 mm), straight rail length (model 514 mm), rail height above the deck, top-rail spacing (labelled 355 mm), cross-member heights, grip location from a fixed corner, gloved hand width/height/length, and fleece thickness. Manufacturer envelope: 637 × 315 mm side view; upper width 355 mm. The interface draws an estimated frame from these and the manufacturer images (see `design.md`); it does not prove fit. Enter your measured hand envelope in the interface and check the clearance in the Cross-section tab.
+Sewing steps and materials are on the pattern page (`index.html`, section 6). Use this sheet to record the real values and the test results.
 
-## Assembly
-1. Print and check the calibration square. Cut scrap shell and lining pieces.
-2. Mark the midpoint of each curved cap and the matching wrap edge. Sew each cap to a cap-seam edge of the wrap along the stitch line. Repeat with the lining pieces, which are cut smaller (inner parallel curve).
-   Bind the rail notch on each cap; it is cut on the finished line.
-3. Nest lining inside shell, test fit and adjust bulk; bind open lower edges. No wrist closure.
-4. With the bicycle stationary, identify mounting tab locations on the rail. The webbing blank is only a circumference-plus-overlap estimate; add any required sewing/closure allowance after testing. Secure tabs to reinforced fabric and keep all ends captive.
-5. Check natural grip, immediate withdrawal in multiple directions, entry/exit, rotation, sliding, drainage, and clearance from moving parts. Do not ride with an unvalidated prototype.
+## Measure (record the value used)
 
-The open-bottom design is a provisional choice. It may need a different cap shape or mounting arrangement after physical measurements. No thermal performance or safety certification is claimed.
+- [ ] Rail tube diameter, with calipers (default 16 mm is an estimate): ____ mm
+- [ ] Straight length of the upper side rail between the bends: ____ mm (the hand warmer must be shorter)
+- [ ] Gloved fist thickness across the rail, while gripping: ____ mm
+- [ ] Gloved knuckle height above the top of the tube, while gripping: ____ mm
+- [ ] Lining thickness, lightly pressed: ____ mm
+- [ ] Printed 50 × 50 mm square measures: ____ × ____ mm
+
+## Test fit (bike standing still)
+
+- [ ] Natural grip with winter gloves
+- [ ] Hand comes out immediately in every direction; no restraint at the hand or wrist
+- [ ] Cover does not slide along or rotate around the rail
+- [ ] Tabs closed, tails trimmed, nothing near the wheel or other moving parts
+- [ ] Water drains from the open lower edge
+
+Do not ride with an unvalidated prototype. No thermal performance or safety certification is claimed.
+
+## Notes for the next iteration
+
+-
