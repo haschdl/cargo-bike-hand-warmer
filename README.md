@@ -2,19 +2,24 @@
 
 A removable insulated open-bottom canopy for each upper side rail of the Fiido T2 Family Add-on. This is an experimental sewing project, not a certified passenger safety accessory.
 
-## Milestone 1: printable SVG pattern
+## Use
 
-Open `index.html` locally in a modern browser. No installation or dependencies. Adjust the provisional dimensions, download the SVG, and print at actual size using a vector editor. Verify the 50 mm calibration square before cutting. The SVG is a full-size sheet, not tiled A4.
+Open `index.html` in a browser by double-clicking it. There is no installation, server or dependency.
 
-The first prototype uses a rectangular wrap panel forming an inverted U and two semicircular end panels. The lower edge remains open; the end panels shield longitudinal wind. The shell and lining use the same nominal stitch geometry; test turn-of-cloth with scrap material. Attachment tabs are separate and their positions must be determined on the actual rail.
+1. Enter the measurements (calipers, tape and the passenger's gloved hand).
+2. Check the cross-section.
+3. Click **Print A4 pattern** and print at 100 % / "Actual size".
+4. Check the 50 × 50 mm square on page 1. Trim and tape the pages as described there.
+5. Follow the material list and numbered sewing steps on the page.
 
-Manufacturer reference dimensions: overall length 637 mm, height 315 mm, upper width 355 mm; mounting dimensions 384, 48 and 104 mm. These do not establish tube diameter or usable grip position. All generator defaults are unverified.
+There is one design: a semicircular insulated canopy over each upper side rail. It is open underneath, with an optional wind skirt, a bound rail notch in each end cap, lining pieces cut to sit inside without bunching, and webbing tabs with hook-and-loop. All defaults are **unverified**; see `docs/design.md`.
 
 ## Development
 
-- `src/geometry.mjs`: pure geometry and SVG generation
-- `index.html`: local browser interface (serve with `python3 -m http.server 8000`, then open http://localhost:8000)
-- `tests/geometry.test.mjs`: run with `node --test tests/geometry.test.mjs`
-- `docs/prototype.md`: measurement and assembly checklist
+- `src/pattern.js`: pure pattern geometry, validation and materials
+- `src/drawing.js`: pure SVG builders for the illustrations, pattern sheet, A4 tiles and full-size export
+- `index.html`: the page and a small amount of glue code (classic scripts, so it works from `file://`)
+- Tests: `node --test tests/*.test.mjs`
+- `docs/design.md`: design, geometry corrections, printing and assumptions; `docs/prototype.md`: measurement checklist
 
 Do not use on a moving bicycle until fit, unobstructed grip and withdrawal, attachment stability and wheel clearance have been assessed. No wrist closures or restraints. Do not treat the canopy as a substitute for gloves or approved passenger equipment.

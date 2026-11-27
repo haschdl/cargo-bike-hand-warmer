@@ -1,9 +1,143 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fiido canopy pattern</title><style>body{font:16px system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}label{display:flex;justify-content:space-between;margin:12px 0}input{width:85px}svg{width:100%;height:auto}button{padding:10px}#error{color:#a00}</style><h1>Fiido T2 passenger canopy</h1><p>Unverified prototype dimensions in mm. Open-bottom canopy; measure actual grip and rail before cutting.</p><main><section><form id="form"></form><p id="stats"></p><p id="error" role="alert"></p><button id="save">Download full-size SVG</button><p>Print at 100%; verify calibration square. No A4 tiling yet.</p></section><section id="preview"></section></main><script type="module">
-import {pattern,svg} from './src/geometry.mjs';
-const defaults={length:180,radius:65,seam:10,tube:25,overlap:35,strapWidth:25,lining:4};
-const names={length:'Canopy length',radius:'Canopy radius',seam:'Seam allowance',tube:'Tube diameter',overlap:'Strap overlap',strapWidth:'Webbing width',lining:'Lining thickness'};
-const form=document.querySelector('#form'),save=document.querySelector('#save');let output='';
-for(const [k,v] of Object.entries(defaults)){const label=document.createElement('label');label.textContent=names[k];const input=document.createElement('input');input.type='number';input.min='1';input.max='1000';input.step='any';input.name=k;input.value=v;label.append(input);form.append(label)}
-function update(){try{const p=pattern(Object.fromEntries([...new FormData(form)].map(([k,v])=>[k,Number(v)])));output=svg(p);document.querySelector('#preview').innerHTML=output;document.querySelector('#stats').textContent='Matching curved seam: '+p.arc.toFixed(1)+' mm; nominal lined radius: '+p.internalRadius+' mm; strap blank: '+p.strapLength.toFixed(1)+' mm.';document.querySelector('#error').textContent='';save.disabled=false}catch(e){output='';document.querySelector('#preview').replaceChildren();document.querySelector('#stats').textContent='';document.querySelector('#error').textContent=e.message;save.disabled=true}}
-form.addEventListener('input',update);form.addEventListener('submit',e=>e.preventDefault());save.onclick=()=>{const url=URL.createObjectURL(new Blob([output],{type:'image/svg+xml'}));const a=document.createElement('a');a.href=url;a.download='fiido-canopy.svg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};update();
-</script></html>
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fiido T2 passenger hand warmer — sewing pattern</title>
+<style>
+  body { font: 17px/1.55 Georgia, "Times New Roman", serif; color: #1a1a1a; background: #fff; margin: 0; }
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 28px 22px 60px; }
+  h1 { font: bold 30px/1.2 Helvetica, Arial, sans-serif; margin: 0 0 6px; }
+  h2 { font: bold 21px/1.3 Helvetica, Arial, sans-serif; margin: 42px 0 10px; border-top: 2px solid #1a1a1a; padding-top: 10px; }
+  .lead { margin: 0; }
+  .warning { border: 1.5px solid #1a1a1a; padding: 10px 14px; margin: 16px 0 0; }
+  figure { margin: 10px 0 0; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 15px; color: #444; margin-top: 6px; }
+  form { display: grid; grid-template-columns: 1fr 120px; gap: 10px 18px; align-items: center; }
+  form label { display: block; }
+  form label small { display: block; color: #555; font-size: 14px; }
+  form input { font: 18px Helvetica, Arial, sans-serif; width: 100%; padding: 6px 8px; box-sizing: border-box; border: 1.5px solid #1a1a1a; }
+  form .unit { position: relative; }
+  form .unit::after { content: "mm"; position: absolute; right: 9px; top: 9px; font: 14px Helvetica, Arial, sans-serif; color: #555; }
+  #summary { margin-top: 14px; }
+  #error { color: #a00; font-weight: bold; min-height: 1.5em; }
+  button { font: bold 17px Helvetica, Arial, sans-serif; padding: 10px 18px; margin: 4px 10px 4px 0; border: 1.5px solid #1a1a1a; background: #fff; cursor: pointer; }
+  button:hover { background: #f1ede4; }
+  .sheet { border: 1px solid #bbb; }
+  table { border-collapse: collapse; width: 100%; font-size: 16px; }
+  th, td { border-bottom: 1px solid #bbb; padding: 7px 6px; text-align: left; vertical-align: top; }
+  ol li { margin-bottom: 8px; }
+  #print { display: none; }
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    .page-wrap { display: none; }
+    #print { display: block; }
+    #print .a4 { width: 210mm; height: 297mm; overflow: hidden; break-after: page; page-break-after: always; }
+    #print .a4 svg { width: 210mm; height: 297mm; display: block; }
+  }
+</style>
+<div class="page-wrap">
+  <h1>Passenger hand warmer for the Fiido T2 Family Add-on</h1>
+  <p class="lead">A pair of insulated covers that sit over the upper side rails, so a passenger can hold the rail with warm hands. Enter a few measurements, print the pattern on A4 at full size, then sew.</p>
+  <p class="warning"><b>Prototype.</b> This is not a certified passenger safety accessory. No straps go around the hand or wrist, and the cover is open underneath. Before any ride, check with the bike standing still that the passenger can grip naturally and pull the hand out in any direction, and that nothing can reach the wheel.</p>
+
+  <h2>1. Where it goes</h2>
+  <figure id="side"></figure>
+  <figcaption>One hand warmer on each upper side rail. Based on the manufacturer’s photos; the frame is drawn schematically.</figcaption>
+
+  <h2>2. Cross-section</h2>
+  <figure id="section"></figure>
+  <figcaption>Drawn to scale from your measurements. Looking along the rail.</figcaption>
+
+  <h2>3. Measurements</h2>
+  <p>Measure with a ruler, tape or calipers. For the hand, have the passenger wear their winter gloves and grip a broom handle or dowel about as thick as the rail.</p>
+  <form id="form" novalidate>
+    <label for="tube">Rail tube diameter<small>Calipers across the upper side rail. 16 mm is only an estimate from photos.</small></label><span class="unit"><input id="tube" name="tube" type="number" step="0.5"></span>
+    <label for="length">Hand-warmer length along the rail<small>Must fit on the straight part of the rail, clear of the bends.</small></label><span class="unit"><input id="length" name="length" type="number" step="5"></span>
+    <label for="fistWidth">Gloved fist thickness across the rail<small>Side to side, while gripping.</small></label><span class="unit"><input id="fistWidth" name="fistWidth" type="number" step="1"></span>
+    <label for="fistAbove">Gloved knuckles above the top of the tube<small>While gripping, from the top of the tube to the highest knuckle.</small></label><span class="unit"><input id="fistAbove" name="fistAbove" type="number" step="1"></span>
+    <label for="lining">Lining thickness<small>Fleece or batting, pressed lightly between two rulers.</small></label><span class="unit"><input id="lining" name="lining" type="number" step="0.5"></span>
+    <label for="skirt">Skirt depth below the rail<small>Optional straight sides that block wind under the rail. 0 for none.</small></label><span class="unit"><input id="skirt" name="skirt" type="number" step="5"></span>
+    <label for="ease">Extra room around the hand<small>10 mm is a comfortable start.</small></label><span class="unit"><input id="ease" name="ease" type="number" step="1"></span>
+    <label for="seam">Seam allowance<small>Added outside every sewn edge.</small></label><span class="unit"><input id="seam" name="seam" type="number" step="1"></span>
+    <label for="webbing">Webbing and hook-and-loop width<small>As bought.</small></label><span class="unit"><input id="webbing" name="webbing" type="number" step="5"></span>
+  </form>
+  <p id="error" role="alert"></p>
+  <p id="summary"></p>
+
+  <h2>4. Pattern pieces</h2>
+  <p>Solid line: cut. Dashed line: stitch. Small notches: match marks. Dashed grey lines show the A4 page joins.</p>
+  <figure class="sheet" id="sheet"></figure>
+
+  <h2>5. Print and export</h2>
+  <p>Print on A4 at <b>100 % / “Actual size”</b>. Turn off “Fit to page”. Page 1 has the 50 × 50 mm check square, a page map and trimming instructions.</p>
+  <button type="button" id="printBtn">Print A4 pattern</button>
+  <button type="button" id="svgBtn">Download full-size SVG</button>
+  <p id="pageInfo"></p>
+
+  <h2>6. Materials and sewing</h2>
+  <table id="materials"></table>
+  <h3>Sewing instructions (make two)</h3>
+  <ol>
+    <li>Print the pattern and check the 50 mm square. Cut out the paper pieces on the solid lines.</li>
+    <li>Cut, for the pair: 2 shell wraps (P01), 4 shell end caps (P02), 2 lining wraps (P04), 4 lining end caps (P05) and 4 webbing tabs (P03). Transfer all match marks with a 3 mm snip into the seam allowance. Seal webbing ends with a lighter.</li>
+    <li><b>Test first.</b> Sew one shell from scrap fabric (steps 4–5), slip it over the rail with the bike standing still, and check the fit with the passenger’s gloved hand before cutting good fabric.</li>
+    <li><b>Shell.</b> With right sides together, pin one end cap to one stitch-line edge of the shell wrap. Match the centre marks (and the skirt marks, if any). Ease the wrap around the curve and sew on the stitch line. Repeat at the other end.</li>
+    <li>Clip the curved seam allowances every 10 mm, without cutting the stitches. Turn right side out.</li>
+    <li><b>Lining.</b> Make the lining the same way from P04 and P05. Do not turn it: its seam allowances stay outside, facing the shell. The lining is cut slightly smaller so it sits inside without wrinkles.</li>
+    <li>Slide the lining into the shell, wrong sides together. Line up the open lower edges and the notches, and baste them 3 mm from the edge.</li>
+    <li><b>Bind</b> the whole open edge in one pass: along both long sides, across each end-cap base and around each rail notch. Fold the ends of the binding under where they meet.</li>
+    <li><b>Tabs.</b> Sew hook tape to one face of the “hook + loop” end of each tab. Box-stitch the “sew to cap” end to the <i>outside</i> of an end cap, right beside the rail notch, through both layers (one tab per end cap). Wrap the tab around a dowel the size of the rail to find where its end lands, and sew loop tape there.</li>
+    <li><b>Fit check, bike standing still:</b> fit over the rail, close both tabs, and confirm all of the following. The passenger can grip naturally. The hand comes out immediately in every direction. The cover does not slide or rotate. Nothing hangs near the wheel. Trim any tab tails.</li>
+  </ol>
+  <p>Record what worked and what did not, together with the real measurements, before changing the pattern.</p>
+</div>
+<div id="print"></div>
+<script src="src/pattern.js"></script>
+<script src="src/drawing.js"></script>
+<script>
+  'use strict';
+  const SP = globalThis.SewingPattern, PD = globalThis.PatternDrawing;
+  const form = document.getElementById('form');
+  for (const [k, v] of Object.entries(SP.DEFAULTS)) document.getElementById(k).value = v;
+  const $ = id => document.getElementById(id);
+  const cm = mmv => (mmv / 10).toFixed(0) + ' cm';
+  let current = null;
+
+  function render() {
+    const m = Object.fromEntries(Object.keys(SP.DEFAULTS).map(k => [k, Number(document.getElementById(k).value)]));
+    let p;
+    try { p = SP.pattern(m); } catch (e) { $('error').textContent = e.message; return; }
+    $('error').textContent = '';
+    current = p;
+    $('side').innerHTML = PD.sideView(p);
+    $('section').innerHTML = PD.crossSection(p);
+    $('summary').textContent = `Canopy radius ${p.radius} mm, so ${2 * p.radius} mm wide and ${p.radius} mm high above the rail centre. Room around the fist: ${Math.round(p.clearance.radial)} mm.`;
+    $('sheet').innerHTML = PD.sheetPreview(p);
+    const pages = PD.a4Pages(p);
+    $('print').innerHTML = pages.pages.map(s => `<div class="a4">${s}</div>`).join('');
+    $('pageInfo').textContent = `${pages.pages.length} A4 pages: 1 instruction page and ${pages.cols} × ${pages.rows} pattern pages.`;
+    const mat = SP.materials(p);
+    const rows = [
+      ['Shell fabric (water-resistant, e.g. 600D polyester)', `At least ${cm(mat.shell.width)} × ${cm(mat.shell.height + 50)}`],
+      ['Lining (fleece or insulating batting, about ' + p.m.lining + ' mm)', `At least ${cm(mat.lining.width)} × ${cm(mat.lining.height + 50)}`],
+      [`Webbing, ${p.m.webbing} mm`, `${cm(mat.webbing + 100)} (4 tabs of ${Math.round(p.pieces.find(x => x.id === 'P03').width)} mm)`],
+      [`Hook-and-loop tape, ${p.m.webbing} mm`, `${cm(mat.hookAndLoop)} of hook and ${cm(mat.hookAndLoop)} of loop`],
+      ['Fold-over binding or bias tape, 25 mm', `${cm(mat.binding)}`],
+      ['Polyester thread, size 90 needle', 'Lighter or seam sealant for webbing ends'],
+    ];
+    $('materials').innerHTML = '<tr><th>Material (for the pair)</th><th>Quantity</th></tr>' + rows.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('');
+  }
+
+  form.addEventListener('input', render);
+  $('printBtn').addEventListener('click', () => window.print());
+  $('svgBtn').addEventListener('click', () => {
+    if (!current) return;
+    const url = URL.createObjectURL(new Blob([PD.fullSizeSvg(current)], {type: 'image/svg+xml'}));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'fiido-hand-warmer-pattern.svg'; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  render();
+</script>
+</html>
